@@ -1,0 +1,17 @@
+E:\code\prosystem\platform\AopSdk\bin\Release\AopSdk.dll
+E:\code\prosystem\platform\AopSdk\bin\Release\AopSdk.pdb
+E:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.dll
+E:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.pdb
+E:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.csprojResolveAssemblyReference.cache
+F:\code\prosystem\platform\AopSdk\bin\Release\AopSdk.dll
+F:\code\prosystem\platform\AopSdk\bin\Release\AopSdk.pdb
+F:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.dll
+F:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.pdb
+F:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.csprojAssemblyReference.cache
+F:\code\prosystem\platform\AopSdk\obj\Release\AopSdk.csproj.CoreCompileInputs.cache
+F:\code\CustomerMall\platform\AopSdk\bin\Release\AopSdk.dll
+F:\code\CustomerMall\platform\AopSdk\bin\Release\AopSdk.pdb
+F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.csprojAssemblyReference.cache
+F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.csproj.CoreCompileInputs.cache
+F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.dll
+F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.pdb

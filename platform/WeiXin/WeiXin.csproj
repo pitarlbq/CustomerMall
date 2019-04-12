@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C2467F4A-BC3D-4BDD-8D8C-9DE6497BCD51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WeiXin</RootNamespace>
+    <AssemblyName>WeiXin</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\AccessTokenInfo.cs" />
+    <Compile Include="Domain\AppIdInfo.cs" />
+    <Compile Include="Domain\Attentions.cs" />
+    <Compile Include="Domain\CustomerServiceAccountRemove.cs" />
+    <Compile Include="Domain\CustomerServiceInvite.cs" />
+    <Compile Include="Domain\CustomerServiceAccount.cs" />
+    <Compile Include="Domain\CustomerServiceCreate.cs" />
+    <Compile Include="Domain\CustomMessage.cs" />
+    <Compile Include="Domain\ErrInfo.cs" />
+    <Compile Include="Domain\EventMessage.cs" />
+    <Compile Include="Domain\JsApiTicketInfo.cs" />
+    <Compile Include="Domain\Oauth2AccessTokenInfo.cs" />
+    <Compile Include="Domain\QrCodeCreateMessage.cs" />
+    <Compile Include="Domain\ReceiveMessage.cs" />
+    <Compile Include="Domain\ReceiveMessageBase.cs" />
+    <Compile Include="Domain\ReplyMessage.cs" />
+    <Compile Include="Domain\TemPlateMessage\TemPlateMessage.cs" />
+    <Compile Include="Domain\User.cs" />
+    <Compile Include="IMessageProcessor.cs" />
+    <Compile Include="IMpClient.cs" />
+    <Compile Include="IMpRequest.cs" />
+    <Compile Include="MessageHandler.cs" />
+    <Compile Include="MpClient.cs" />
+    <Compile Include="MpResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request\AccessTokenGetRequest.cs" />
+    <Compile Include="Request\CustomerServiceRemoveAccountRequest.cs" />
+    <Compile Include="Request\CustomerServiceEditAccountRequest.cs" />
+    <Compile Include="Request\CustomerServiceInviteRequest.cs" />
+    <Compile Include="Request\CustomerServiceCreateAccountRequest.cs" />
+    <Compile Include="Request\DownloadMediaRequest.cs" />
+    <Compile Include="Request\GetAttentionsRequest.cs" />
+    <Compile Include="Request\GetUserInfoRequest.cs" />
+    <Compile Include="Request\JsApiTicketGetRequest.cs" />
+    <Compile Include="Request\Oauth2AccessTokenGetRequest.cs" />
+    <Compile Include="Request\QrCodeCreateRequest.cs" />
+    <Compile Include="Request\RequestBase.cs" />
+    <Compile Include="Request\CustomerServiceCreateRequest.cs" />
+    <Compile Include="Request\SendCustomMessageRequest.cs" />
+    <Compile Include="Request\TemPlateMessage\TemPlateMessage.cs" />
+    <Compile Include="Request\UploadImgRequest.cs" />
+    <Compile Include="Request\UploadMediaRequest.cs" />
+    <Compile Include="Response\AccessTokenGetResponse.cs" />
+    <Compile Include="Response\CustomerServiceRemoveAccountResponse.cs" />
+    <Compile Include="Response\CustomerServiceEditAccountResponse.cs" />
+    <Compile Include="Response\CustomerServiceInviteResponse.cs" />
+    <Compile Include="Response\CustomerServiceCreateAccountResponse.cs" />
+    <Compile Include="Response\DownloadMediaResponse.cs" />
+    <Compile Include="Response\GetAttentionsResponse.cs" />
+    <Compile Include="Response\GetUserInfoResponse.cs" />
+    <Compile Include="Response\JsApiTicketGetResponse.cs" />
+    <Compile Include="Response\Oauth2AccessTokenGetResponse.cs" />
+    <Compile Include="Response\QrCodeCreateResponse.cs" />
+    <Compile Include="Response\CustomerServiceCreateResponse.cs" />
+    <Compile Include="Response\SendCustomMessageResponse.cs" />
+    <Compile Include="Response\TemPlateMessage\TemPlateMessageResponse.cs" />
+    <Compile Include="Response\UploadImgRespons.cs" />
+    <Compile Include="Response\UploadMediaResponse.cs" />
+    <Compile Include="Util\FileIO.cs" />
+    <Compile Include="Util\FileItem.cs" />
+    <Compile Include="Util\Logger.cs" />
+    <Compile Include="Util\Tools.cs" />
+    <Compile Include="Util\WebUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentConfig\PaymentConfig.csproj">
+      <Project>{f881402c-f6cb-4907-a059-35b17cbf5e03}</Project>
+      <Name>PaymentConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{a8c330c1-5525-4ecf-ae86-974fbc3ab142}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

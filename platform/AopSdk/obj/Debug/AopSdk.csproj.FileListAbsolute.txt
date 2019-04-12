@@ -1,0 +1,17 @@
+E:\code\prosystem\platform\AopSdk\bin\Debug\AopSdk.dll
+E:\code\prosystem\platform\AopSdk\bin\Debug\AopSdk.pdb
+E:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.csprojResolveAssemblyReference.cache
+E:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.dll
+E:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.pdb
+F:\code\prosystem\platform\AopSdk\bin\Debug\AopSdk.dll
+F:\code\prosystem\platform\AopSdk\bin\Debug\AopSdk.pdb
+F:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.csprojAssemblyReference.cache
+F:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.csproj.CoreCompileInputs.cache
+F:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.dll
+F:\code\prosystem\platform\AopSdk\obj\Debug\AopSdk.pdb
+F:\code\CustomerMall\platform\AopSdk\bin\Debug\AopSdk.dll
+F:\code\CustomerMall\platform\AopSdk\bin\Debug\AopSdk.pdb
+F:\code\CustomerMall\platform\AopSdk\obj\Debug\AopSdk.csprojAssemblyReference.cache
+F:\code\CustomerMall\platform\AopSdk\obj\Debug\AopSdk.csproj.CoreCompileInputs.cache
+F:\code\CustomerMall\platform\AopSdk\obj\Debug\AopSdk.dll
+F:\code\CustomerMall\platform\AopSdk\obj\Debug\AopSdk.pdb

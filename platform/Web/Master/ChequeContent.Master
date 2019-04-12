@@ -1,0 +1,474 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ChequeContent.master.cs" Inherits="Web.Master.ChequeContent" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=<%=getToken() %>"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/easyui/gray/easyui.css" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <link href="../js/ztree/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="../js/ztree/jquery.ztree.core.js"></script>
+    <script src="../js/Page/Comm/unit.js?t=<%=getToken() %>"></script>
+    <script src="../js/Page/Main/Content.js?t=<%=getToken() %>"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=<%=getToken() %>"></script>
+    <link href="../styles/basic.css?50" rel="stylesheet" />
+    <link href="../styles/buttons.css?v30" rel="stylesheet" />
+    <script type="text/javascript">
+        function GetSelectSeller() {
+            var list = GetSelectRadio();
+            return getListByType(list, 'seller')
+        }
+        function GetSelectProduct() {
+            var list = GetSelectRadio();
+            return getListByType(list, 'product')
+        }
+        function GetSelectDepartment() {
+            var list = GetSelectRadio();
+            return getListByType(list, 'department')
+        }
+        function GetSelectProject() {
+            var list = GetSelectRadio();
+            return getListByType(list, 'project')
+        }
+        function GetSelectBuyer() {
+            var list = GetSelectRadio();
+            return getListByType(list, 'buyer')
+        }
+        function GetSelectRadio() {
+            var idarry = [];
+            var radios = $('#tt input[type="radio"]');
+            $.each(radios, function () {
+                if ($(this).prop('checked')) {
+                    var checkidarray = $(this).attr("id").split('_');
+                    var checkid = checkidarray[checkidarray.length - 1];
+                    var type = $(this).attr("data-type");
+                    idarry.push({ id: checkid, type: type });
+                }
+            })
+            return idarry;
+        }
+        function getListByType(array, type) {
+            var list = [];
+            $.each(array, function () {
+                if (this.type == type) {
+                    list.push(this.id);
+                }
+            })
+            return list;
+        }
+        var IDMark_A = "_a";
+        var setting = {
+            view: {
+                addDiyDom: addDiyDom,
+                dblClickExpand: false,
+                selectedMulti: true,
+                showIcon: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            check: {
+                enable: true
+            },
+            callback: {
+                onClick: onClick,
+                onRightClick: OnRightClick
+            }
+        };
+        function OnRightClick(event, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("tt");
+            if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+                zTree.cancelSelectedNode();
+                showRMenu(treeNode.id, treeNode.ptype, event.clientX, event.clientY);
+            } else if (treeNode && !treeNode.noR) {
+                zTree.selectNode(treeNode);
+                showRMenu(treeNode.id, treeNode.ptype, event.clientX, event.clientY);
+            }
+        }
+        function getTitleByType(type) {
+            if (type == "sellerinfo" || type == "sellercategory" || type == "seller") {
+                return "销售单位";
+            }
+            if (type == "productinfo" || type == "productcategory" || type == "product") {
+                return "货物";
+            }
+            if (type == "departmentinfo" || type == "departmentcategory" || type == "department") {
+                return "部门";
+            }
+            if (type == "projectinfo" || type == "projectcategory" || type == "project") {
+                return "项目";
+            }
+            if (type == "buyerinfo" || type == "buyercategory" || type == "buyer") {
+                return "购货单位";
+            }
+        }
+        function showRMenu(id, type, x, y) {
+            nodetype = type;
+            nodeid = id.replace(nodetype + "_", "");
+            if (nodetype == "root") {
+                $("#rMenu ul").hide();
+            }
+            else {
+                $("#rMenu ul").show();
+                if (type == "sellerinfo" || type == "productinfo" || type == "departmentinfo" || type == "projectinfo" || type == "buyerinfo") {
+                    $("#m_addCategory").show();
+                    $("#m_editCategory").hide();
+                    $("#m_delCategory").hide();
+                    $("#m_addItem").show();
+                    $("#m_editItem").hide();
+                    $("#m_delItem").hide();
+                    var title = getTitleByType(type);
+                    $('#addItemTitle').html(title);
+                }
+                else if (type == "sellercategory" || type == "productcategory" || type == "departmentcategory" || type == "projectcategory" || type == "buyercategory") {
+                    $("#m_addCategory").hide();
+                    $("#m_editCategory").show();
+                    $("#m_delCategory").show();
+                    $("#m_addItem").show();
+                    $("#m_editItem").hide();
+                    $("#m_delItem").hide();
+                    var title = getTitleByType(type);
+                    $('#addItemTitle').html(title);
+
+                } else {
+                    $("#m_addCategory").hide();
+                    $("#m_editCategory").hide();
+                    $("#m_delCategory").hide();
+                    $("#m_addItem").hide();
+                    $("#m_editItem").show();
+                    $("#m_delItem").show();
+                    var title = getTitleByType(type);
+                    $('#editItemTitle').html(title);
+                    $('#deleteItemTitle').html(title);
+                }
+                rMenu.css({ "top": y + "px", "left": x + "px", "visibility": "visible" });
+                $("body").bind("mousedown", onBodyMouseDown);
+            }
+        }
+        function hideRMenu() {
+            if (rMenu) rMenu.css({ "visibility": "hidden" });
+            $("body").unbind("mousedown", onBodyMouseDown);
+        }
+        function onBodyMouseDown(event) {
+            if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length > 0)) {
+                rMenu.css({ "visibility": "hidden" });
+            }
+        }
+        function onClick(event, treeId, treeNode, clickFlag) {
+            var zTree = $.fn.zTree.getZTreeObj("tt");
+            zTree.expandNode(treeNode, null, false, true, true, true);
+            var btn = $("#" + treeNode.id);
+            btn.click();
+        }
+        function addDiyDom(treeId, treeNode) {
+            var aObj = $("#" + treeNode.tId + IDMark_A);
+            if (treeNode.ptype == "seller" || treeNode.ptype == "product" || treeNode.ptype == "department" || treeNode.ptype == "project" || treeNode.ptype == "buyer") {
+                var editStr = "<input type='radio' class='radioBtn' id='radio_" + treeNode.id + "' name='radio_" + treeNode.ptype + "' data-type='" + treeNode.ptype + "' onfocus='this.blur();'></input>";
+                aObj.before(editStr);
+                var btn = $("#radio_" + treeNode.id);
+                if (btn) btn.bind("click", function () { checkBrand(treeNode, btn); });
+            }
+        }
+        function checkAccessories(treeNode, btn) {
+            var checkedRadio = getCheckedRadio("radio_" + treeNode.id);
+            if (btn.prop("checked")) {
+                if (!checkedRadio) {
+                    $("#radio_" + treeNode.children[0].id).prop("checked", true);
+                }
+            } else {
+                checkedRadio.prop("checked", false);
+            }
+        }
+        function checkBrand(treeNode, btn) {
+            if (btn.prop("checked")) {
+                var pObj = $("#checkbox_" + treeNode.getParentNode().id);
+                if (!pObj.prop("checked")) {
+                    pObj.prop("checked", true);
+                }
+            }
+        }
+        function getCheckedRadio(radioName) {
+            var r = document.getElementsByName(radioName);
+            for (var i = 0; i < r.length; i++) {
+                if (r[i].checked) {
+                    return $(r[i]);
+                }
+            }
+            return null;
+        }
+        function doSearch() {
+            var keywords = $("#searchbox").searchbox("getValue");
+            var options = { visit: 'gettree', Keywords: keywords };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/ChequeHandler.ashx',
+                data: options,
+                success: function (data) {
+                    $.fn.zTree.init($("#tt"), setting, data);
+                }
+            });
+        }
+        var rMenu, nodetype, nodeid;
+        $(function () {
+            rMenu = $("#rMenu");
+            doSearch();
+        });
+        function reset() {
+            $("#searchbox").searchbox("setValue", "");
+            doSearch();
+        }
+        function addTreeNode(type) {
+            hideRMenu();
+            var iframe = "";
+            var title = "";
+            if (type == "category") {
+                if (nodetype == "sellerinfo") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/SellerCategoryEdit.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>";
+                    title = "销售单位分类";
+                }
+                else if (nodetype == "productinfo") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/ProductCategoryEdit.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "货物分类";
+                }
+                else if (nodetype == "departmentinfo") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/DepartmentCategoryEdit.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "部门分类";
+                }
+                else if (nodetype == "projectinfo") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/ProjectCategoryEdit.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "项目分类";
+                }
+                else if (nodetype == "buyerinfo") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/BuyerCategoryEdit.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "购货单位分类";
+                }
+            }
+            else if (type == "item") {
+                if (nodetype == "sellerinfo" || nodetype == "sellercategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditSeller.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "销货单位";
+                }
+                else if (nodetype == "productinfo" || nodetype == "productcategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditProduct.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "货物";
+                }
+                else if (nodetype == "departmentinfo" || nodetype == "departmentcategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditDepartment.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "部门";
+                }
+                else if (nodetype == "projectinfo" || nodetype == "projectcategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditProject.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "项目";
+                }
+                else if (nodetype == "buyerinfo" || nodetype == "buyercategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditBuyer.aspx' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "购货单位";
+                }
+            }
+            $("<div id='winsubadd'></div>").appendTo("body").window({
+                title: '新增' + title,
+                width: ($(window).width() - 400),
+                height: $(window).height(),
+                top: 0,
+                left: 200,
+                modal: true,
+                minimizable: false,
+                maximizable: false,
+                collapsible: false,
+                content: iframe,
+                onClose: function () {
+                    $("#winsubadd").remove();
+                    doSearch();
+                }
+            });
+        }
+        function editTreeNote(type) {
+            hideRMenu();
+            var iframe = "";
+            var title = "";
+            if (type == "category") {
+                if (nodetype == "sellercategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/SellerCategoryEdit.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "销售单位分类";
+                }
+                else if (nodetype == "productcategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/ProductCategoryEdit.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "货物分类";
+                }
+                else if (nodetype == "departmentcategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/DepartmentCategoryEdit.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "部门分类";
+                }
+                else if (nodetype == "projectcategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/ProjectCategoryEdit.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "项目分类";
+                }
+                else if (nodetype == "buyercategory") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/BuyerCategoryEdit.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "购货单位分类";
+                }
+            }
+            else if (type == "item") {
+                if (nodetype == "seller") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditSeller.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "销售单位";
+                }
+                else if (nodetype == "product") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditProduct.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "货物";
+                }
+                else if (nodetype == "department") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditDepartment.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "部门";
+                }
+                else if (nodetype == "project") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditProject.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "项目";
+                }
+                else if (nodetype == "buyer") {
+                    iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../Cheque/EditBuyer.aspx?ID=" + nodeid + "' style='width:100%;height:" + ($(window).height() - 40) + "px'></iframe>"
+                    title = "购货单位";
+                }
+            }
+
+            $("<div id='winsubadd'></div>").appendTo("body").window({
+                title: '修改' + title,
+                width: ($(window).width() - 400),
+                height: $(window).height(),
+                top: 0,
+                left: 200,
+                modal: true,
+                minimizable: false,
+                maximizable: false,
+                collapsible: false,
+                content: iframe,
+                onClose: function () {
+                    $("#winsubadd").remove();
+                    doSearch();
+                }
+            });
+        }
+        function removeTreeNote(type) {
+            hideRMenu();
+            top.$.messager.confirm("提示", "确认删除选中的节点?", function (r) {
+                if (r) {
+                    var options = { visit: 'removenode', ID: nodeid, NodeType: nodetype, Type: type };
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: '../Handler/ChequeHandler.ashx',
+                        data: options,
+                        success: function (message) {
+                            if (message.status) {
+                                show_message('删除成功', 'success', function () {
+                                    doSearch();
+                                });
+                                return;
+                            }
+                            show_message('系统错误', 'error');
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+    <link href="../styles/treecss.css" rel="stylesheet" />
+    <style>
+        .l-btn-plain {
+            display: inline;
+        }
+
+        .ztree li {
+            padding: 5px 0 0 0;
+            /*background:url("../js/ztree/zTreeStyle/img/line_conn.gif") repeat-y scroll 0 0*/
+        }
+
+            .ztree li > input {
+                margin: 0;
+            }
+
+        .searchlabel a#tdsearch {
+            display: none;
+        }
+
+        .radioBtn, .checkboxBtn {
+            height: 16px;
+            vertical-align: middle;
+        }
+    </style>
+    <style type="text/css">
+        div#rMenu {
+            position: absolute;
+            visibility: hidden;
+            top: 0;
+            background-color: #2f80d1;
+            text-align: left;
+            padding: 0px 1px;
+        }
+
+            div#rMenu ul {
+                margin: 0;
+            }
+
+                div#rMenu ul li {
+                    margin: 1px 0;
+                    padding: 3px 10px 3px 5px;
+                    cursor: pointer;
+                    list-style: none outside none;
+                    background-color: #fff;
+                }
+
+                    div#rMenu ul li i {
+                        margin: 0 5px;
+                    }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',split:true,title:'查询信息',border:false" style="width: 260px; padding: 10px; border: none;">
+        <div class="easyui-panel searchlabel" style="max-height: 10%;">
+            <input id="searchbox" class="easyui-searchbox" data-options="prompt:'',searcher:doSearch" style="height: 30px; width: 150px;" />
+            <a href="#" onclick="reset()">刷新</a>
+        </div>
+        <div class="easyui-panel" style="max-height: 90%;">
+            <ul id="tt" class="ztree"></ul>
+            <div id="rMenu">
+                <ul>
+                    <li id="m_addCategory">
+                        <a href="javascript:void(0)" onclick="addTreeNode('category')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-add'">新增分类</a>
+                    </li>
+                    <li id="m_editCategory">
+                        <a href="javascript:void(0)" onclick="editTreeNote('category')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-edit'">修改分类</a>
+                    </li>
+                    <li id="m_delCategory">
+                        <a href="javascript:void(0)" onclick="removeTreeNote('category')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-remove'">删除分类</a>
+                    </li>
+                    <li id="m_addItem">
+                        <a href="javascript:void(0)" onclick="addTreeNode('item')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-add'">新增<span id="addItemTitle"></span></a>
+                    </li>
+                    <li id="m_editItem">
+                        <a href="javascript:void(0)" onclick="editTreeNote('item')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-edit'">修改<span id="editItemTitle"></span></a>
+                    </li>
+                    <li id="m_delItem" onclick="('item');">
+                        <a href="javascript:void(0)" onclick="removeTreeNote('item')" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-remove'">删除<span id="deleteItemTitle"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'center',border:false">
+        <asp:ContentPlaceHolder ID="content" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+</body>
+</html>
+

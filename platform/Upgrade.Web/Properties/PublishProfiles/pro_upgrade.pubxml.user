@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+您 Web 项目的发布/打包进程将使用此文件。您可以通过编辑此 MSBuild 文件
+来自定义该进程的行为。若要了解与此相关的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=208121。
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>F:\code\publish\prosys_upgrade</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="Api/Api.ashx">
+      <publishTime>05/11/2018 22:47:40</publishTime>
+    </File>
+    <File Include="Api/CommHandler.ashx">
+      <publishTime>05/11/2018 22:47:40</publishTime>
+    </File>
+    <File Include="bin/DataAccess.dll">
+      <publishTime>03/06/2019 19:35:03</publishTime>
+    </File>
+    <File Include="bin/ICSharpCode.SharpZipLib.dll">
+      <publishTime>02/08/2018 17:06:56</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>05/11/2018 22:48:09</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>05/11/2018 22:48:22</publishTime>
+    </File>
+    <File Include="bin/ThoughtWorks.QRCode.dll">
+      <publishTime>05/11/2018 22:48:09</publishTime>
+    </File>
+    <File Include="bin/Upgrade.Web.dll">
+      <publishTime>03/06/2019 19:35:05</publishTime>
+    </File>
+    <File Include="bin/Utility.dll">
+      <publishTime>03/06/2019 19:34:55</publishTime>
+    </File>
+    <File Include="js/easyui/easyui-lang-zh_CN.js">
+      <publishTime>05/11/2018 22:47:40</publishTime>
+    </File>
+    <File Include="js/easyui/jquery.easyui.min.js">
+      <publishTime>05/11/2018 22:47:40</publishTime>
+    </File>
+    <File Include="js/jquery-1.8.3.min.js">
+      <publishTime>05/11/2018 22:47:40</publishTime>
+    </File>
+    <File Include="upgradesite.aspx">
+      <publishTime>11/09/2018 11:23:56</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>03/03/2019 23:09:22</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,234 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="CKDepartmentContent.Master.cs" Inherits="Web.Master.CKDepartmentContent" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../styles/iconfont/iconfont.css?v10" rel="stylesheet" />
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script src="../js/easyui/jquery.easyui.min.js?t=<%=getToken() %>"></script>
+    <script src="../js/easyui/easyui-lang-zh_CN.js"></script>
+    <link href="../js/ztree/zTreeStyle/zTreeStyle.css?v1" rel="stylesheet" />
+    <script src="../js/ztree/jquery.ztree.core.js"></script>
+    <script src="../js/ztree/jquery.ztree.excheck.js"></script>
+    <script src="../js/ztree/jquery.ztree.exedit.js"></script>
+    <link href="../js/easyui/gray/easyui.css?v1" rel="stylesheet" />
+    <link href="../js/easyui/icon.css" rel="stylesheet" />
+    <script src="../js/Page/Comm/unit.js?t=<%=getToken() %>"></script>
+    <script src="../js/Page/Main/Content.js?t=<%=getToken() %>"></script>
+    <script src="../js/Page/Comm/MaskUtil.js?t=<%=getToken() %>"></script>
+    <link href="../styles/basic.css?v=50" rel="stylesheet" />
+    <link href="../styles/buttons.css?v=30" rel="stylesheet" />
+    <style type="text/css">
+        body, .panel-body, .textbox .textbox-text, .l-btn-text {
+            font-size: 13px;
+        }
+
+        .l-btn-plain {
+            display: inline;
+        }
+
+        .l-btn-plain {
+            display: inline;
+        }
+
+        .ztree li {
+            padding: 5px 0 0 0;
+            /*background:url("../js/ztree/zTreeStyle/img/line_conn.gif") repeat-y scroll 0 0*/
+        }
+
+            .ztree li > input {
+                margin: 0;
+            }
+    </style>
+    <script>
+        $(function () {
+            doSearch();
+        });
+        function GetSelectedID() {
+            var idarry = [];
+            var treeObj = $.fn.zTree.getZTreeObj("tt");
+            var nodes = treeObj.getCheckedNodes(true);
+            $.each(nodes, function (index, node) {
+                if (Number(node.ID) > 0) {
+                    idarry.push(node.ID);
+                }
+            })
+            return idarry;
+        }
+        var IDMark_A = "_a";
+        var setting = {
+            view: {
+                dblClickExpand: true,
+                selectedMulti: true,
+                showIcon: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            check: {
+                enable: true,
+                chkboxType: { "Y": "s", "N": "s" }
+            }
+        };
+        function beforeExpand(treeId, treeNode) {
+            if (!treeNode.isAjaxing) {
+                treeNode.times = 1;
+                ajaxGetNodes(treeNode, "refresh");
+                return true;
+            } else {
+                alert("zTree 正在下载数据中，请稍后展开节点。。。");
+                return false;
+            }
+        }
+        function ajaxGetNodes(treeNode, reloadType) {
+            var zTree = $.fn.zTree.getZTreeObj("tt");
+            if (reloadType == "refresh") {
+                treeNode.icon = "../js/ztree/zTreeStyle/img/loading.gif";
+                zTree.updateNode(treeNode);
+            }
+            zTree.reAsyncChildNodes(treeNode, reloadType, true);
+        }
+        function doSearch() {
+            var keywords = $("#searchbox").searchbox("getValue");
+            MaskUtil.mask('#tt');
+            var options = { visit: 'loaddepartmenttree', Keywords: keywords };
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '../Handler/CKHandler.ashx',
+                data: options,
+                success: function (data) {
+                    MaskUtil.unmask();
+                    $.fn.zTree.init($("#tt"), setting, data);
+                }
+            });
+        }
+        function onClickRaido() {
+            try {
+                setTimeout(function () { SearchTT() }, 100);
+            } catch (e) {
+
+            }
+        }
+        function reset() {
+            $("#searchbox").searchbox("setValue", "");
+            doSearch();
+        }
+        function addTree() {
+            var iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../CangKu/EditDepartment.aspx' style='width:100%;height:" + ($(parent.window).height() - 40) + "px'></iframe>";
+            parent.$("<div id='windepartmentadd'></div>").appendTo("body").window({
+                title: '新增部门',
+                width: ($(parent.window).width() - 400),
+                height: $(parent.window).height(),
+                top: 0,
+                left: 200,
+                modal: true,
+                minimizable: false,
+                maximizable: false,
+                collapsible: false,
+                content: iframe,
+                onClose: function () {
+                    parent.$("#windepartmentadd").remove();
+                    doSearch();
+                }
+            });
+        }
+        function editTree() {
+            var IDList = GetSelectedID();
+            if (IDList.length == 0) {
+                show_message("请选择一个部门", "info");
+                return;
+            }
+            var iframe = "<iframe id='myFrame' scrolling='auto' frameborder='0' src='../CangKu/EditDepartment.aspx?ID=" + IDList[0] + "' style='width:100%;height:" + ($(parent.window).height() - 40) + "px'></iframe>";
+            parent.$("<div id='windepartmentadd'></div>").appendTo("body").window({
+                title: '修改部门',
+                width: ($(parent.window).width() - 400),
+                height: $(parent.window).height(),
+                top: 0,
+                left: 200,
+                modal: true,
+                minimizable: false,
+                maximizable: false,
+                collapsible: false,
+                content: iframe,
+                onClose: function () {
+                    parent.$("#windepartmentadd").remove();
+                    doSearch();
+                }
+            });
+        }
+        function removeTree() {
+            var IDList = GetSelectedID();
+            if (IDList.length == 0) {
+                show_message("请选择一个部门", "info");
+                return;
+            }
+            top.$.messager.confirm("提示", "是否删除选中的部门", function (r) {
+                if (r) {
+                    var options = { visit: 'removeckdepartment', IDList: JSON.stringify(IDList) };
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: '../Handler/CKHandler.ashx',
+                        data: options,
+                        success: function (message) {
+                            if (message.status) {
+                                show_message('删除成功', 'success', function () {
+                                    $("#tt_table").datagrid("reload");
+                                    doSearch();
+                                });
+                                return;
+                            }
+                            show_message('系统错误', 'error');
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+    <link href="../styles/treecss.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div class="easyui-layout" data-options="fit:true" id="main_layout_content">
+        <div data-options="region:'west',split:true,title:'菜单',border:false" style="width: 260px; padding: 10px; border: none;">
+            <div class="easyui-panel searchlabel" style="max-height: 10%;">
+                <input id="searchbox" class="easyui-searchbox" data-options="prompt:'',searcher:doSearch" style="height: 30px; width: 150px;" />
+                <a href="#" onclick="reset()">刷新</a>
+            </div>
+            <div class="easyui-panel" style="max-height: 90%;">
+                <div>
+                    <a href="javascript:void(0)" onclick="addTree()" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-add'">增加</a>
+                    <a href="javascript:void(0)" onclick="editTree()" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-edit'">修改</a>
+                    <a href="javascript:void(0)" onclick="removeTree()" class="easyui-linkbutton btnlinkbar" data-options="plain:true,iconCls:'icon-remove'">删除</a>
+                </div>
+                <ul id="tt" class="ztree"></ul>
+            </div>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div id="main_form" style="height: 100%;">
+                <asp:ContentPlaceHolder ID="content" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            <div id="dialog_form" style="display: none;" class="mainDialogForm">
+                <div id="dialog_title1" class="dialogtitle"></div>
+                <a href="javascript:void(0)" onclick="do_close_dialog()" class="easyui-linkbutton btntoolbar btn_dialog_close" data-options="plain:true,iconCls:'icon-close'">关闭</a>
+                <iframe id="dialog_frame1" src="" style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="easyui-layout" data-options="fit:true" id="main_layoutframe" style="display: none;">
+        <div data-options="region:'center',border:false">
+            <div id="dialog_title2" class="dialogtitle"></div>
+            <a href="javascript:void(0)" onclick="do_close_dialog()" class="easyui-linkbutton btntoolbar btn_dialog_close" data-options="plain:true,iconCls:'icon-close'">关闭</a>
+            <iframe id="dialog_frame2" src="" style="width: 100%; height: 0px; border: 0; position: absolute; top: 30px; left: 0; right: 0;"></iframe>
+        </div>
+    </div>
+</body>
+</html>

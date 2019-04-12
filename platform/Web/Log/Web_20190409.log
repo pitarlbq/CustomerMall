@@ -1,0 +1,40 @@
+2019-04-09 16:24:05,741 [4700] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:24:07,892 [10308] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:24:19,405 [10308] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:24:39,621 [17552] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:24:46,021 [19916] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:24:49,224 [10308] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:37:20,214 [15232] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:37:20,931 [19952] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:37:21,750 [4436] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
+2019-04-09 16:37:22,274 [10308] ERROR root - [ServiceHandler]命令:getroominfo
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Web.Handler.ServiceHandler.getroominfo(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 1636
+   在 Web.Handler.ServiceHandler.ProcessRequest(HttpContext context) 位置 F:\code\CustomerMall\platform\Web\Handler\ServiceHandler.ashx.cs:行号 47
