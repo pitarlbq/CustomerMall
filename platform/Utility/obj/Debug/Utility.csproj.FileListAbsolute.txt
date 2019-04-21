@@ -35,16 +35,3 @@ F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CoreCompileInputs
 F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CopyComplete
 F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.dll
 F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.pdb
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\Utility.dll
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\Utility.pdb
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\ICSharpCode.SharpZipLib.dll
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\log4net.dll
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\Microsoft.Web.Administration.dll
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\Newtonsoft.Json.dll
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\ThoughtWorks.QRCode.dll
-F:\code\gitcode\CustomerMall\platform\Utility\bin\Debug\Newtonsoft.Json.xml
-F:\code\gitcode\CustomerMall\platform\Utility\obj\Debug\Utility.csprojAssemblyReference.cache
-F:\code\gitcode\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CoreCompileInputs.cache
-F:\code\gitcode\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CopyComplete
-F:\code\gitcode\CustomerMall\platform\Utility\obj\Debug\Utility.dll
-F:\code\gitcode\CustomerMall\platform\Utility\obj\Debug\Utility.pdb
