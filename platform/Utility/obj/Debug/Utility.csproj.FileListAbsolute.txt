@@ -35,3 +35,16 @@ F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CoreCompileInputs
 F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CopyComplete
 F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.dll
 F:\code\CustomerMall\platform\Utility\obj\Debug\Utility.pdb
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\Utility.dll
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\Utility.pdb
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\log4net.dll
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\Microsoft.Web.Administration.dll
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\Newtonsoft.Json.dll
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\ThoughtWorks.QRCode.dll
+D:\WWW\CustomerMall\platform\Utility\bin\Debug\Newtonsoft.Json.xml
+D:\WWW\CustomerMall\platform\Utility\obj\Debug\Utility.csprojAssemblyReference.cache
+D:\WWW\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CoreCompileInputs.cache
+D:\WWW\CustomerMall\platform\Utility\obj\Debug\Utility.csproj.CopyComplete
+D:\WWW\CustomerMall\platform\Utility\obj\Debug\Utility.dll
+D:\WWW\CustomerMall\platform\Utility\obj\Debug\Utility.pdb
