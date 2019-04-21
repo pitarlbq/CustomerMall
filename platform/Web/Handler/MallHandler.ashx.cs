@@ -7688,7 +7688,7 @@ namespace Web.Handler
                 try
                 {
                     helper.BeginTransaction();
-                    string cmdtext = "delete from [Mall_Category] where ID in (" + string.Join(",", IDList.ToArray()) + ")";
+                    string cmdtext = "delete from [Mall_Category] where ID in (" + string.Join(",", IDList.ToArray()) + ") and (CanNotDelete is null or CanNotDelete=0)";
                     helper.Execute(cmdtext, CommandType.Text, new List<System.Data.SqlClient.SqlParameter>());
                     helper.Commit();
                 }

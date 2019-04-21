@@ -595,6 +595,30 @@ namespace Foresight.DataAccess
 			}
 		}
 		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool _isWaiMai = false;
+		/// <summary>
+		/// 
+		/// </summary>
+        [Description("")]
+		[DatabaseColumn()]
+		[TypeConverter(typeof(MinToEmptyTypeConverter))]
+		[DataObjectField(false, false, true)]
+		public bool IsWaiMai
+		{
+			[DebuggerStepThrough()]
+			get { return this._isWaiMai; }
+			set 
+			{
+				if (this._isWaiMai != value) 
+				{
+					this._isWaiMai = value;
+					this.IsDirty = true;	
+					OnPropertyChanged("IsWaiMai");
+				}
+			}
+		}
+		
 		
 		
 		#endregion
@@ -634,7 +658,8 @@ DECLARE @table TABLE(
 	[ShortAddress] nvarchar(200),
 	[IsTopShow] bit,
 	[BalanceAccount] nvarchar(100),
-	[BusinessDesc] ntext
+	[BusinessDesc] ntext,
+	[IsWaiMai] bit
 );
 
 INSERT INTO [dbo].[Mall_Business] (
@@ -660,7 +685,8 @@ INSERT INTO [dbo].[Mall_Business] (
 	[Mall_Business].[ShortAddress],
 	[Mall_Business].[IsTopShow],
 	[Mall_Business].[BalanceAccount],
-	[Mall_Business].[BusinessDesc]
+	[Mall_Business].[BusinessDesc],
+	[Mall_Business].[IsWaiMai]
 ) 
 output 
 	INSERTED.[ID],
@@ -686,7 +712,8 @@ output
 	INSERTED.[ShortAddress],
 	INSERTED.[IsTopShow],
 	INSERTED.[BalanceAccount],
-	INSERTED.[BusinessDesc]
+	INSERTED.[BusinessDesc],
+	INSERTED.[IsWaiMai]
 into @table
 VALUES ( 
 	@BusinessName,
@@ -711,7 +738,8 @@ VALUES (
 	@ShortAddress,
 	@IsTopShow,
 	@BalanceAccount,
-	@BusinessDesc 
+	@BusinessDesc,
+	@IsWaiMai 
 ); 
 
 SELECT 
@@ -738,7 +766,8 @@ SELECT
 	[ShortAddress],
 	[IsTopShow],
 	[BalanceAccount],
-	[BusinessDesc] 
+	[BusinessDesc],
+	[IsWaiMai] 
 FROM @table;
 ";
 			}
@@ -778,7 +807,8 @@ DECLARE @table TABLE(
 	[ShortAddress] nvarchar(200),
 	[IsTopShow] bit,
 	[BalanceAccount] nvarchar(100),
-	[BusinessDesc] ntext
+	[BusinessDesc] ntext,
+	[IsWaiMai] bit
 );
 
 UPDATE [dbo].[Mall_Business] SET 
@@ -804,7 +834,8 @@ UPDATE [dbo].[Mall_Business] SET
 	[Mall_Business].[ShortAddress] = @ShortAddress,
 	[Mall_Business].[IsTopShow] = @IsTopShow,
 	[Mall_Business].[BalanceAccount] = @BalanceAccount,
-	[Mall_Business].[BusinessDesc] = @BusinessDesc 
+	[Mall_Business].[BusinessDesc] = @BusinessDesc,
+	[Mall_Business].[IsWaiMai] = @IsWaiMai 
 output 
 	INSERTED.[ID],
 	INSERTED.[BusinessName],
@@ -829,7 +860,8 @@ output
 	INSERTED.[ShortAddress],
 	INSERTED.[IsTopShow],
 	INSERTED.[BalanceAccount],
-	INSERTED.[BusinessDesc]
+	INSERTED.[BusinessDesc],
+	INSERTED.[IsWaiMai]
 into @table
 WHERE 
 	[Mall_Business].[ID] = @ID
@@ -858,7 +890,8 @@ SELECT
 	[ShortAddress],
 	[IsTopShow],
 	[BalanceAccount],
-	[BusinessDesc] 
+	[BusinessDesc],
+	[IsWaiMai] 
 FROM @table;
 ";
 			}
@@ -945,7 +978,8 @@ WHERE
 	[Mall_Business].[ShortAddress],
 	[Mall_Business].[IsTopShow],
 	[Mall_Business].[BalanceAccount],
-	[Mall_Business].[BusinessDesc]
+	[Mall_Business].[BusinessDesc],
+	[Mall_Business].[IsWaiMai]
 ";
 			}
 		}
@@ -992,14 +1026,15 @@ WHERE
 		/// <param name="isTopShow">isTopShow</param>
 		/// <param name="balanceAccount">balanceAccount</param>
 		/// <param name="businessDesc">businessDesc</param>
-		public static void InsertMall_Business(string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc)
+		/// <param name="isWaiMai">isWaiMai</param>
+		public static void InsertMall_Business(string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc, bool @isWaiMai)
 		{
             using (SqlHelper helper = new SqlHelper())
             {
                 try
                 {
                     helper.BeginTransaction();
-            		InsertMall_Business(@businessName, @businessAddress, @contactName, @contactPhone, @licenseNumber, @addMan, @addTime, @status, @approveRemark, @approveTime, @approveMan, @isShowOnHome, @coverImage, @isSuggestion, @mapLocation, @userID, @deviceID, @remark, @sortOrder, @shortAddress, @isTopShow, @balanceAccount, @businessDesc, helper);
+            		InsertMall_Business(@businessName, @businessAddress, @contactName, @contactPhone, @licenseNumber, @addMan, @addTime, @status, @approveRemark, @approveTime, @approveMan, @isShowOnHome, @coverImage, @isSuggestion, @mapLocation, @userID, @deviceID, @remark, @sortOrder, @shortAddress, @isTopShow, @balanceAccount, @businessDesc, @isWaiMai, helper);
                     helper.Commit();
                 }
                 catch
@@ -1037,8 +1072,9 @@ WHERE
 		/// <param name="isTopShow">isTopShow</param>
 		/// <param name="balanceAccount">balanceAccount</param>
 		/// <param name="businessDesc">businessDesc</param>
+		/// <param name="isWaiMai">isWaiMai</param>
 		/// <param name="helper">helper</param>
-		internal static void InsertMall_Business(string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc, SqlHelper @helper)
+		internal static void InsertMall_Business(string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc, bool @isWaiMai, SqlHelper @helper)
 		{
 			string commandText = @"
 DECLARE @table TABLE(
@@ -1065,7 +1101,8 @@ DECLARE @table TABLE(
 	[ShortAddress] nvarchar(200),
 	[IsTopShow] bit,
 	[BalanceAccount] nvarchar(100),
-	[BusinessDesc] ntext
+	[BusinessDesc] ntext,
+	[IsWaiMai] bit
 );
 
 INSERT INTO [dbo].[Mall_Business] (
@@ -1091,7 +1128,8 @@ INSERT INTO [dbo].[Mall_Business] (
 	[Mall_Business].[ShortAddress],
 	[Mall_Business].[IsTopShow],
 	[Mall_Business].[BalanceAccount],
-	[Mall_Business].[BusinessDesc]
+	[Mall_Business].[BusinessDesc],
+	[Mall_Business].[IsWaiMai]
 ) 
 output 
 	INSERTED.[ID],
@@ -1117,7 +1155,8 @@ output
 	INSERTED.[ShortAddress],
 	INSERTED.[IsTopShow],
 	INSERTED.[BalanceAccount],
-	INSERTED.[BusinessDesc]
+	INSERTED.[BusinessDesc],
+	INSERTED.[IsWaiMai]
 into @table
 VALUES ( 
 	@BusinessName,
@@ -1142,7 +1181,8 @@ VALUES (
 	@ShortAddress,
 	@IsTopShow,
 	@BalanceAccount,
-	@BusinessDesc 
+	@BusinessDesc,
+	@IsWaiMai 
 ); 
 
 SELECT 
@@ -1169,7 +1209,8 @@ SELECT
 	[ShortAddress],
 	[IsTopShow],
 	[BalanceAccount],
-	[BusinessDesc] 
+	[BusinessDesc],
+	[IsWaiMai] 
 FROM @table;
 ";
 			
@@ -1197,6 +1238,7 @@ FROM @table;
 			parameters.Add(new SqlParameter("@IsTopShow", @isTopShow));
 			parameters.Add(new SqlParameter("@BalanceAccount", EntityBase.GetDatabaseValue(@balanceAccount)));
 			parameters.Add(new SqlParameter("@BusinessDesc", EntityBase.GetDatabaseValue(@businessDesc)));
+			parameters.Add(new SqlParameter("@IsWaiMai", @isWaiMai));
 			
 			@helper.Execute(commandText, CommandType.Text, parameters);
 		}
@@ -1229,14 +1271,15 @@ FROM @table;
 		/// <param name="isTopShow">isTopShow</param>
 		/// <param name="balanceAccount">balanceAccount</param>
 		/// <param name="businessDesc">businessDesc</param>
-		public static void UpdateMall_Business(int @iD, string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc)
+		/// <param name="isWaiMai">isWaiMai</param>
+		public static void UpdateMall_Business(int @iD, string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc, bool @isWaiMai)
 		{
 			using (SqlHelper helper = new SqlHelper()) 
 			{
 				try
 				{
 					helper.BeginTransaction();
-					UpdateMall_Business(@iD, @businessName, @businessAddress, @contactName, @contactPhone, @licenseNumber, @addMan, @addTime, @status, @approveRemark, @approveTime, @approveMan, @isShowOnHome, @coverImage, @isSuggestion, @mapLocation, @userID, @deviceID, @remark, @sortOrder, @shortAddress, @isTopShow, @balanceAccount, @businessDesc, helper);
+					UpdateMall_Business(@iD, @businessName, @businessAddress, @contactName, @contactPhone, @licenseNumber, @addMan, @addTime, @status, @approveRemark, @approveTime, @approveMan, @isShowOnHome, @coverImage, @isSuggestion, @mapLocation, @userID, @deviceID, @remark, @sortOrder, @shortAddress, @isTopShow, @balanceAccount, @businessDesc, @isWaiMai, helper);
 					helper.Commit();
 				}
 				catch 
@@ -1275,8 +1318,9 @@ FROM @table;
 		/// <param name="isTopShow">isTopShow</param>
 		/// <param name="balanceAccount">balanceAccount</param>
 		/// <param name="businessDesc">businessDesc</param>
+		/// <param name="isWaiMai">isWaiMai</param>
 		/// <param name="helper">helper</param>
-		internal static void UpdateMall_Business(int @iD, string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc, SqlHelper @helper)
+		internal static void UpdateMall_Business(int @iD, string @businessName, string @businessAddress, string @contactName, string @contactPhone, string @licenseNumber, string @addMan, DateTime @addTime, int @status, string @approveRemark, DateTime @approveTime, string @approveMan, bool @isShowOnHome, string @coverImage, bool @isSuggestion, string @mapLocation, int @userID, string @deviceID, string @remark, int @sortOrder, string @shortAddress, bool @isTopShow, string @balanceAccount, string @businessDesc, bool @isWaiMai, SqlHelper @helper)
 		{
 			string commandText = @"
 DECLARE @table TABLE(
@@ -1303,7 +1347,8 @@ DECLARE @table TABLE(
 	[ShortAddress] nvarchar(200),
 	[IsTopShow] bit,
 	[BalanceAccount] nvarchar(100),
-	[BusinessDesc] ntext
+	[BusinessDesc] ntext,
+	[IsWaiMai] bit
 );
 
 UPDATE [dbo].[Mall_Business] SET 
@@ -1329,7 +1374,8 @@ UPDATE [dbo].[Mall_Business] SET
 	[Mall_Business].[ShortAddress] = @ShortAddress,
 	[Mall_Business].[IsTopShow] = @IsTopShow,
 	[Mall_Business].[BalanceAccount] = @BalanceAccount,
-	[Mall_Business].[BusinessDesc] = @BusinessDesc 
+	[Mall_Business].[BusinessDesc] = @BusinessDesc,
+	[Mall_Business].[IsWaiMai] = @IsWaiMai 
 output 
 	INSERTED.[ID],
 	INSERTED.[BusinessName],
@@ -1354,7 +1400,8 @@ output
 	INSERTED.[ShortAddress],
 	INSERTED.[IsTopShow],
 	INSERTED.[BalanceAccount],
-	INSERTED.[BusinessDesc]
+	INSERTED.[BusinessDesc],
+	INSERTED.[IsWaiMai]
 into @table
 WHERE 
 	[Mall_Business].[ID] = @ID
@@ -1383,7 +1430,8 @@ SELECT
 	[ShortAddress],
 	[IsTopShow],
 	[BalanceAccount],
-	[BusinessDesc] 
+	[BusinessDesc],
+	[IsWaiMai] 
 FROM @table;
 ";
 			
@@ -1412,6 +1460,7 @@ FROM @table;
 			parameters.Add(new SqlParameter("@IsTopShow", @isTopShow));
 			parameters.Add(new SqlParameter("@BalanceAccount", EntityBase.GetDatabaseValue(@balanceAccount)));
 			parameters.Add(new SqlParameter("@BusinessDesc", EntityBase.GetDatabaseValue(@businessDesc)));
+			parameters.Add(new SqlParameter("@IsWaiMai", @isWaiMai));
 			
 			@helper.Execute(commandText, CommandType.Text, parameters);
 		}
@@ -1713,6 +1762,7 @@ SELECT " + Mall_Business.SelectFieldList + "FROM [dbo].[Mall_Business] " + Mall_
 			public const string IsTopShow = "IsTopShow";
 			public const string BalanceAccount = "BalanceAccount";
 			public const string BusinessDesc = "BusinessDesc";
+			public const string IsWaiMai = "IsWaiMai";
             
             public static Dictionary<string,string> AllPropertiesDescription=new Dictionary<string,string>(){
     			 {"ID" , "int:"},
@@ -1739,6 +1789,7 @@ SELECT " + Mall_Business.SelectFieldList + "FROM [dbo].[Mall_Business] " + Mall_
     			 {"IsTopShow" , "bool:"},
     			 {"BalanceAccount" , "string:"},
     			 {"BusinessDesc" , "string:"},
+    			 {"IsWaiMai" , "bool:"},
             };
 		}
 		#endregion

@@ -16,6 +16,7 @@
             } else {
                 $('.tr_parent_category').hide();
             }
+            $('.tr_parent_category').show();
         });
         function loadtagparams() {
             var options = { visit: 'getmalltagparams' };

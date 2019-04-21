@@ -38,3 +38,17 @@ F:\code\CustomerMall\platform\DataAccess\obj\Release\DataAccess.csproj.CoreCompi
 F:\code\CustomerMall\platform\DataAccess\obj\Release\DataAccess.csproj.CopyComplete
 F:\code\CustomerMall\platform\DataAccess\obj\Release\DataAccess.dll
 F:\code\CustomerMall\platform\DataAccess\obj\Release\DataAccess.pdb
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\DataAccess.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\DataAccess.pdb
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\Utility.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\log4net.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\ICSharpCode.SharpZipLib.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\Newtonsoft.Json.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\ThoughtWorks.QRCode.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\Utility.pdb
+F:\code\gitcode\CustomerMall\platform\DataAccess\bin\Release\Newtonsoft.Json.xml
+F:\code\gitcode\CustomerMall\platform\DataAccess\obj\Release\DataAccess.csprojAssemblyReference.cache
+F:\code\gitcode\CustomerMall\platform\DataAccess\obj\Release\DataAccess.csproj.CoreCompileInputs.cache
+F:\code\gitcode\CustomerMall\platform\DataAccess\obj\Release\DataAccess.csproj.CopyComplete
+F:\code\gitcode\CustomerMall\platform\DataAccess\obj\Release\DataAccess.dll
+F:\code\gitcode\CustomerMall\platform\DataAccess\obj\Release\DataAccess.pdb

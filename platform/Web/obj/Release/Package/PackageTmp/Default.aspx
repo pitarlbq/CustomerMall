@@ -396,6 +396,7 @@
                 })
                 $(this).addClass('active');
                 var group = $(this).attr('data-group');
+                vueMenu.get_my_menus(group);
             })
             $('.menuTitle label').bind('click', function () {
                 var elems = $('.menuTitle label');

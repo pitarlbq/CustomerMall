@@ -189,10 +189,10 @@ namespace Foresight.DataAccess
                         desc = "积分兑换";
                         break;
                     case 3:
-                        desc = "拼团";
+                        desc = "团购";
                         break;
                     case 4:
-                        desc = "抢购";
+                        desc = "秒杀";
                         break;
                     default:
                         break;

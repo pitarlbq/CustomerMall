@@ -75,6 +75,19 @@ namespace Foresight.DataAccess
             string Statement = @"select * from Mall_Business where " + string.Join(" and ", conditions);
             return GetList<Mall_Business>(Statement, parameters).ToArray();
         }
+        public static Mall_Business[] GetMall_BusinessListByCategoryIDList(int[] CategoryIDList)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<string> conditions = new List<string>();
+            conditions.Add("1=1");
+            conditions.Add(" [Status]=1");
+            if (CategoryIDList.Length == 0)
+            {
+                return new Mall_Business[] { };
+            }
+            conditions.Add("exists(select 1 from [Mall_Business_Category] where [BusinessID]=[Mall_Business].ID and [CategoryID] in (" + string.Join(",", CategoryIDList) + "))");
+            return GetList<Mall_Business>("select * from [Mall_Business] where " + string.Join(" and ", conditions.ToArray()), parameters).ToArray();
+        }
         public string StatusDesc
         {
             get

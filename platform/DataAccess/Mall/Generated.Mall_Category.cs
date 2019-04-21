@@ -259,6 +259,30 @@ namespace Foresight.DataAccess
 			}
 		}
 		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private bool _canNotDelete = false;
+		/// <summary>
+		/// 
+		/// </summary>
+        [Description("")]
+		[DatabaseColumn()]
+		[TypeConverter(typeof(MinToEmptyTypeConverter))]
+		[DataObjectField(false, false, true)]
+		public bool CanNotDelete
+		{
+			[DebuggerStepThrough()]
+			get { return this._canNotDelete; }
+			set 
+			{
+				if (this._canNotDelete != value) 
+				{
+					this._canNotDelete = value;
+					this.IsDirty = true;	
+					OnPropertyChanged("CanNotDelete");
+				}
+			}
+		}
+		
 		
 		
 		#endregion
@@ -284,7 +308,8 @@ DECLARE @table TABLE(
 	[ParentID] int,
 	[CategoryType] nvarchar(100),
 	[IsDisabled] bit,
-	[IsShowOnMallYouXuan] bit
+	[IsShowOnMallYouXuan] bit,
+	[CanNotDelete] bit
 );
 
 INSERT INTO [dbo].[Mall_Category] (
@@ -296,7 +321,8 @@ INSERT INTO [dbo].[Mall_Category] (
 	[Mall_Category].[ParentID],
 	[Mall_Category].[CategoryType],
 	[Mall_Category].[IsDisabled],
-	[Mall_Category].[IsShowOnMallYouXuan]
+	[Mall_Category].[IsShowOnMallYouXuan],
+	[Mall_Category].[CanNotDelete]
 ) 
 output 
 	INSERTED.[ID],
@@ -308,7 +334,8 @@ output
 	INSERTED.[ParentID],
 	INSERTED.[CategoryType],
 	INSERTED.[IsDisabled],
-	INSERTED.[IsShowOnMallYouXuan]
+	INSERTED.[IsShowOnMallYouXuan],
+	INSERTED.[CanNotDelete]
 into @table
 VALUES ( 
 	@CategoryName,
@@ -319,7 +346,8 @@ VALUES (
 	@ParentID,
 	@CategoryType,
 	@IsDisabled,
-	@IsShowOnMallYouXuan 
+	@IsShowOnMallYouXuan,
+	@CanNotDelete 
 ); 
 
 SELECT 
@@ -332,7 +360,8 @@ SELECT
 	[ParentID],
 	[CategoryType],
 	[IsDisabled],
-	[IsShowOnMallYouXuan] 
+	[IsShowOnMallYouXuan],
+	[CanNotDelete] 
 FROM @table;
 ";
 			}
@@ -358,7 +387,8 @@ DECLARE @table TABLE(
 	[ParentID] int,
 	[CategoryType] nvarchar(100),
 	[IsDisabled] bit,
-	[IsShowOnMallYouXuan] bit
+	[IsShowOnMallYouXuan] bit,
+	[CanNotDelete] bit
 );
 
 UPDATE [dbo].[Mall_Category] SET 
@@ -370,7 +400,8 @@ UPDATE [dbo].[Mall_Category] SET
 	[Mall_Category].[ParentID] = @ParentID,
 	[Mall_Category].[CategoryType] = @CategoryType,
 	[Mall_Category].[IsDisabled] = @IsDisabled,
-	[Mall_Category].[IsShowOnMallYouXuan] = @IsShowOnMallYouXuan 
+	[Mall_Category].[IsShowOnMallYouXuan] = @IsShowOnMallYouXuan,
+	[Mall_Category].[CanNotDelete] = @CanNotDelete 
 output 
 	INSERTED.[ID],
 	INSERTED.[CategoryName],
@@ -381,7 +412,8 @@ output
 	INSERTED.[ParentID],
 	INSERTED.[CategoryType],
 	INSERTED.[IsDisabled],
-	INSERTED.[IsShowOnMallYouXuan]
+	INSERTED.[IsShowOnMallYouXuan],
+	INSERTED.[CanNotDelete]
 into @table
 WHERE 
 	[Mall_Category].[ID] = @ID
@@ -396,7 +428,8 @@ SELECT
 	[ParentID],
 	[CategoryType],
 	[IsDisabled],
-	[IsShowOnMallYouXuan] 
+	[IsShowOnMallYouXuan],
+	[CanNotDelete] 
 FROM @table;
 ";
 			}
@@ -469,7 +502,8 @@ WHERE
 	[Mall_Category].[ParentID],
 	[Mall_Category].[CategoryType],
 	[Mall_Category].[IsDisabled],
-	[Mall_Category].[IsShowOnMallYouXuan]
+	[Mall_Category].[IsShowOnMallYouXuan],
+	[Mall_Category].[CanNotDelete]
 ";
 			}
 		}
@@ -502,14 +536,15 @@ WHERE
 		/// <param name="categoryType">categoryType</param>
 		/// <param name="isDisabled">isDisabled</param>
 		/// <param name="isShowOnMallYouXuan">isShowOnMallYouXuan</param>
-		public static void InsertMall_Category(string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan)
+		/// <param name="canNotDelete">canNotDelete</param>
+		public static void InsertMall_Category(string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan, bool @canNotDelete)
 		{
             using (SqlHelper helper = new SqlHelper())
             {
                 try
                 {
                     helper.BeginTransaction();
-            		InsertMall_Category(@categoryName, @sortOrder, @picturePath, @addTime, @addMan, @parentID, @categoryType, @isDisabled, @isShowOnMallYouXuan, helper);
+            		InsertMall_Category(@categoryName, @sortOrder, @picturePath, @addTime, @addMan, @parentID, @categoryType, @isDisabled, @isShowOnMallYouXuan, @canNotDelete, helper);
                     helper.Commit();
                 }
                 catch
@@ -533,8 +568,9 @@ WHERE
 		/// <param name="categoryType">categoryType</param>
 		/// <param name="isDisabled">isDisabled</param>
 		/// <param name="isShowOnMallYouXuan">isShowOnMallYouXuan</param>
+		/// <param name="canNotDelete">canNotDelete</param>
 		/// <param name="helper">helper</param>
-		internal static void InsertMall_Category(string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan, SqlHelper @helper)
+		internal static void InsertMall_Category(string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan, bool @canNotDelete, SqlHelper @helper)
 		{
 			string commandText = @"
 DECLARE @table TABLE(
@@ -547,7 +583,8 @@ DECLARE @table TABLE(
 	[ParentID] int,
 	[CategoryType] nvarchar(100),
 	[IsDisabled] bit,
-	[IsShowOnMallYouXuan] bit
+	[IsShowOnMallYouXuan] bit,
+	[CanNotDelete] bit
 );
 
 INSERT INTO [dbo].[Mall_Category] (
@@ -559,7 +596,8 @@ INSERT INTO [dbo].[Mall_Category] (
 	[Mall_Category].[ParentID],
 	[Mall_Category].[CategoryType],
 	[Mall_Category].[IsDisabled],
-	[Mall_Category].[IsShowOnMallYouXuan]
+	[Mall_Category].[IsShowOnMallYouXuan],
+	[Mall_Category].[CanNotDelete]
 ) 
 output 
 	INSERTED.[ID],
@@ -571,7 +609,8 @@ output
 	INSERTED.[ParentID],
 	INSERTED.[CategoryType],
 	INSERTED.[IsDisabled],
-	INSERTED.[IsShowOnMallYouXuan]
+	INSERTED.[IsShowOnMallYouXuan],
+	INSERTED.[CanNotDelete]
 into @table
 VALUES ( 
 	@CategoryName,
@@ -582,7 +621,8 @@ VALUES (
 	@ParentID,
 	@CategoryType,
 	@IsDisabled,
-	@IsShowOnMallYouXuan 
+	@IsShowOnMallYouXuan,
+	@CanNotDelete 
 ); 
 
 SELECT 
@@ -595,7 +635,8 @@ SELECT
 	[ParentID],
 	[CategoryType],
 	[IsDisabled],
-	[IsShowOnMallYouXuan] 
+	[IsShowOnMallYouXuan],
+	[CanNotDelete] 
 FROM @table;
 ";
 			
@@ -609,6 +650,7 @@ FROM @table;
 			parameters.Add(new SqlParameter("@CategoryType", EntityBase.GetDatabaseValue(@categoryType)));
 			parameters.Add(new SqlParameter("@IsDisabled", @isDisabled));
 			parameters.Add(new SqlParameter("@IsShowOnMallYouXuan", @isShowOnMallYouXuan));
+			parameters.Add(new SqlParameter("@CanNotDelete", @canNotDelete));
 			
 			@helper.Execute(commandText, CommandType.Text, parameters);
 		}
@@ -627,14 +669,15 @@ FROM @table;
 		/// <param name="categoryType">categoryType</param>
 		/// <param name="isDisabled">isDisabled</param>
 		/// <param name="isShowOnMallYouXuan">isShowOnMallYouXuan</param>
-		public static void UpdateMall_Category(int @iD, string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan)
+		/// <param name="canNotDelete">canNotDelete</param>
+		public static void UpdateMall_Category(int @iD, string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan, bool @canNotDelete)
 		{
 			using (SqlHelper helper = new SqlHelper()) 
 			{
 				try
 				{
 					helper.BeginTransaction();
-					UpdateMall_Category(@iD, @categoryName, @sortOrder, @picturePath, @addTime, @addMan, @parentID, @categoryType, @isDisabled, @isShowOnMallYouXuan, helper);
+					UpdateMall_Category(@iD, @categoryName, @sortOrder, @picturePath, @addTime, @addMan, @parentID, @categoryType, @isDisabled, @isShowOnMallYouXuan, @canNotDelete, helper);
 					helper.Commit();
 				}
 				catch 
@@ -659,8 +702,9 @@ FROM @table;
 		/// <param name="categoryType">categoryType</param>
 		/// <param name="isDisabled">isDisabled</param>
 		/// <param name="isShowOnMallYouXuan">isShowOnMallYouXuan</param>
+		/// <param name="canNotDelete">canNotDelete</param>
 		/// <param name="helper">helper</param>
-		internal static void UpdateMall_Category(int @iD, string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan, SqlHelper @helper)
+		internal static void UpdateMall_Category(int @iD, string @categoryName, int @sortOrder, string @picturePath, DateTime @addTime, string @addMan, int @parentID, string @categoryType, bool @isDisabled, bool @isShowOnMallYouXuan, bool @canNotDelete, SqlHelper @helper)
 		{
 			string commandText = @"
 DECLARE @table TABLE(
@@ -673,7 +717,8 @@ DECLARE @table TABLE(
 	[ParentID] int,
 	[CategoryType] nvarchar(100),
 	[IsDisabled] bit,
-	[IsShowOnMallYouXuan] bit
+	[IsShowOnMallYouXuan] bit,
+	[CanNotDelete] bit
 );
 
 UPDATE [dbo].[Mall_Category] SET 
@@ -685,7 +730,8 @@ UPDATE [dbo].[Mall_Category] SET
 	[Mall_Category].[ParentID] = @ParentID,
 	[Mall_Category].[CategoryType] = @CategoryType,
 	[Mall_Category].[IsDisabled] = @IsDisabled,
-	[Mall_Category].[IsShowOnMallYouXuan] = @IsShowOnMallYouXuan 
+	[Mall_Category].[IsShowOnMallYouXuan] = @IsShowOnMallYouXuan,
+	[Mall_Category].[CanNotDelete] = @CanNotDelete 
 output 
 	INSERTED.[ID],
 	INSERTED.[CategoryName],
@@ -696,7 +742,8 @@ output
 	INSERTED.[ParentID],
 	INSERTED.[CategoryType],
 	INSERTED.[IsDisabled],
-	INSERTED.[IsShowOnMallYouXuan]
+	INSERTED.[IsShowOnMallYouXuan],
+	INSERTED.[CanNotDelete]
 into @table
 WHERE 
 	[Mall_Category].[ID] = @ID
@@ -711,7 +758,8 @@ SELECT
 	[ParentID],
 	[CategoryType],
 	[IsDisabled],
-	[IsShowOnMallYouXuan] 
+	[IsShowOnMallYouXuan],
+	[CanNotDelete] 
 FROM @table;
 ";
 			
@@ -726,6 +774,7 @@ FROM @table;
 			parameters.Add(new SqlParameter("@CategoryType", EntityBase.GetDatabaseValue(@categoryType)));
 			parameters.Add(new SqlParameter("@IsDisabled", @isDisabled));
 			parameters.Add(new SqlParameter("@IsShowOnMallYouXuan", @isShowOnMallYouXuan));
+			parameters.Add(new SqlParameter("@CanNotDelete", @canNotDelete));
 			
 			@helper.Execute(commandText, CommandType.Text, parameters);
 		}
@@ -1013,6 +1062,7 @@ SELECT " + Mall_Category.SelectFieldList + "FROM [dbo].[Mall_Category] " + Mall_
 			public const string CategoryType = "CategoryType";
 			public const string IsDisabled = "IsDisabled";
 			public const string IsShowOnMallYouXuan = "IsShowOnMallYouXuan";
+			public const string CanNotDelete = "CanNotDelete";
             
             public static Dictionary<string,string> AllPropertiesDescription=new Dictionary<string,string>(){
     			 {"ID" , "int:"},
@@ -1025,6 +1075,7 @@ SELECT " + Mall_Category.SelectFieldList + "FROM [dbo].[Mall_Category] " + Mall_
     			 {"CategoryType" , "string:"},
     			 {"IsDisabled" , "bool:"},
     			 {"IsShowOnMallYouXuan" , "bool:"},
+    			 {"CanNotDelete" , "bool:"},
             };
 		}
 		#endregion

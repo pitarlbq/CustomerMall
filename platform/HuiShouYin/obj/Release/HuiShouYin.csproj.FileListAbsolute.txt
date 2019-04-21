@@ -38,3 +38,17 @@ F:\code\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.csproj.CoreCompi
 F:\code\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.csproj.CopyComplete
 F:\code\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.dll
 F:\code\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.pdb
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\HuiShouYin.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\HuiShouYin.pdb
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\Utility.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\log4net.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\ICSharpCode.SharpZipLib.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\Newtonsoft.Json.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\ThoughtWorks.QRCode.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\Utility.pdb
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\bin\Release\Newtonsoft.Json.xml
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.csprojAssemblyReference.cache
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.csproj.CoreCompileInputs.cache
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.csproj.CopyComplete
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.dll
+F:\code\gitcode\CustomerMall\platform\HuiShouYin\obj\Release\HuiShouYin.pdb
