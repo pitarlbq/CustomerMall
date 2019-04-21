@@ -15,3 +15,9 @@ F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.csprojAssemblyReference.
 F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.csproj.CoreCompileInputs.cache
 F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.dll
 F:\code\CustomerMall\platform\AopSdk\obj\Release\AopSdk.pdb
+F:\code\gitcode\CustomerMall\platform\AopSdk\bin\Release\AopSdk.dll
+F:\code\gitcode\CustomerMall\platform\AopSdk\bin\Release\AopSdk.pdb
+F:\code\gitcode\CustomerMall\platform\AopSdk\obj\Release\AopSdk.csprojAssemblyReference.cache
+F:\code\gitcode\CustomerMall\platform\AopSdk\obj\Release\AopSdk.csproj.CoreCompileInputs.cache
+F:\code\gitcode\CustomerMall\platform\AopSdk\obj\Release\AopSdk.dll
+F:\code\gitcode\CustomerMall\platform\AopSdk\obj\Release\AopSdk.pdb

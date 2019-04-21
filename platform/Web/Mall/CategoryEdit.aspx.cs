@@ -27,10 +27,6 @@ namespace Web.Mall
             {
                 int.TryParse(Request.QueryString["ParentID"], out ParentID);
             }
-            if (type != 1)
-            {
-                ParentID = 0;
-            }
             if (CategoryID > 0)
             {
                 var data = Foresight.DataAccess.Mall_Category.GetMall_Category(CategoryID);

@@ -33,45 +33,9 @@
     <script>
         var HasWechatServiceAuth = 0, LogoPath;
         $(function () {
-            getlogo();
             HasWechatServiceAuth = Number("<%=this.HasWechatServiceAuth%>");
             LogoPath = "<%=this.LogoPath%>";
         })
-        function getlogo() {
-            var options = {};
-            options.visit = "getcompanyinfo";
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: 'Handler/UserHandler.ashx',
-                data: options,
-                success: function (message) {
-                    if (message.status) {
-                        if (message.IsHideHome_LogoImg) {
-                            $('.logo').hide()
-                            $('.pageheader .headertitle .logo').hide();
-                        }
-                        else {
-                            if (message.Home_LogoImg != '') {
-                                $('.pageheader .headertitle .logo').css('background-image', 'url("' + message.Home_LogoImg + '")')
-                            } else {
-                                $('.pageheader .headertitle .logo').css('background-image', 'url("' + LogoPath + '")')
-                            }
-                        }
-                        if (message.ExpiringShow) {
-                            $('#servertime').show();
-                            $('#servermsg').html(message.ExpiringMsg);
-                            alertNotify(message.ExpiringMsg);
-                        } else {
-                            $('#servertime').hide();
-                        }
-                    }
-                    else {
-                        show_message('系统异常', 'error');
-                    }
-                }
-            });
-        }
     </script>
     <style>
         .pageheader {
@@ -79,30 +43,19 @@
             left: 0;
             top: 0;
             right: 0;
-            background-color: #233d64;
-            height: 40px;
+            background-color: #fff;
+            height: 80px;
+            z-index: 9999;
         }
 
-            .pageheader .headertitle {
-                width: 160px;
-                margin: 0;
-                float: left;
-            }
-
-            .pageheader a {
-                float: right;
-                line-height: 40px;
-                font-size: 25px;
-                color: #fff;
-                margin: 0 0 0 10px;
-            }
-
-            .pageheader .headertitle .logo {
-                background-size: auto 40px;
+            .pageheader .logo {
+                display: inline-block;
+                background-size: auto 80px;
                 background-repeat: no-repeat;
-                background-position: left center;
-                height: 40px;
-                width: 160px;
+                background-position: center center;
+                height: 80px;
+                width: 200px;
+                background-image: url('../styles/images/newlogo.png');
             }
 
         .timerBox {
@@ -290,7 +243,7 @@
             position: absolute;
             top: 0;
             right: 0;
-            left: 0;
+            left: 201px;
             height: 40px;
             background: #233d64;
         }
@@ -313,7 +266,7 @@
 
         .leftBox {
             position: absolute;
-            top: 40px;
+            top: 0;
             left: 0;
             width: 200px;
             bottom: 0;
@@ -322,7 +275,7 @@
 
         .menuLeft, .treeLeft {
             position: absolute;
-            top: 40px;
+            top: 120px;
             left: 0;
             width: 200px;
             bottom: 0;
@@ -330,7 +283,7 @@
 
         .menuTitle {
             position: absolute;
-            top: 0px;
+            top: 80px;
             left: 0;
             bottom: 0;
             width: 200px;
@@ -365,7 +318,7 @@
         .topMenuBox {
             position: absolute;
             top: 5px;
-            left: 201px;
+            left: 0px;
             width: 60%;
             height: 35px;
         }
@@ -581,11 +534,6 @@
     <div class="easyui-layout" data-options="fit:true,border:false">
         <div data-options="region:'center'" style="border: 0px; background: #fff;">
             <div class="topHeader">
-                <div class="pageheader" style="position: absolute;">
-                    <a class="headertitle" href="Default.aspx">
-                        <div class="logo"></div>
-                    </a>
-                </div>
                 <div class="topMenuBox">
                     <label class="active" data-group="wynk">智慧物业</label>
                     <label data-group="appgl">社区运营</label>
@@ -637,7 +585,11 @@
                     <%} %>
                 </div>
             </div>
+
             <div class="leftBox">
+                <div class="pageheader" style="position: absolute;">
+                    <a class="logo" href="Default.aspx"></a>
+                </div>
                 <div class="menuTitle">
                     <label class="active" data-id="0">菜单</label>
                     <label id="treeLabel" data-id="1">资源</label>

@@ -868,7 +868,7 @@ namespace Web.Mobile
             string strKey = string.Empty;
             int codeId = 0;
             string qrcodeKey = string.Empty;
-            bool result = Utility.LLingHelper.doAddVisitorQrCode(device.SDKKey, endtime, OpenCount, out lingLingId, out strKey, out  codeId, out qrcodeKey);
+            bool result = Utility.LLingHelper.doAddVisitorQrCode(device.SDKKey, endtime, OpenCount, out lingLingId, out strKey, out codeId, out qrcodeKey);
             if (!result)
             {
                 WebUtil.WriteJsonError(context, ErrorCode.InvalideRequest, "门禁服务器异常");
@@ -2921,7 +2921,7 @@ namespace Web.Mobile
                 WebUtil.WriteJsonError(context, ErrorCode.InvalideRequest, "没有登录");
                 return;
             }
-            string headimg = string.IsNullOrEmpty(user.HeadImg) ? "../image/default_user.png" : WebUtil.GetContextPath() + user.HeadImg;
+            string headimg = string.IsNullOrEmpty(user.HeadImg) ? "" : WebUtil.GetContextPath() + user.HeadImg;
             string RealName = string.IsNullOrEmpty(user.NickName) ? "匿名用户" : user.NickName;
             decimal amount_balance = Mall_UserBalance.GetMall_UserBalanceBalance(uid);
             decimal point_balance = Mall_UserPoint.GetMall_UserPointBalance(uid);
@@ -4319,7 +4319,7 @@ namespace Web.Mobile
             long startRowIndex = long.Parse(pageindex);
             int pageSize = int.Parse(pagesize);
             long totals = 0;
-            var list = Foresight.DataAccess.Wechat_Survey.GetWechat_SurveyListBySurveyType(type, startRowIndex, pageSize, out  totals, IsAPPCustomerShow: true);
+            var list = Foresight.DataAccess.Wechat_Survey.GetWechat_SurveyListBySurveyType(type, startRowIndex, pageSize, out totals, IsAPPCustomerShow: true);
             List<int> survey_idlist = list.Select(p => p.ID).ToList();
             Foresight.DataAccess.Wechat_SurveyQuestionOption[] option_list = null;
             Foresight.DataAccess.Wechat_SurveyQuestion[] question_list = null;
@@ -4525,6 +4525,13 @@ namespace Web.Mobile
         }
         private void getbusinesslistbycategoryid(HttpContext context)
         {
+            int categoryid = WebUtil.GetIntValue(context, "categoryid");
+            var category = Mall_Category.GetMall_Category(categoryid);
+            if (category == null)
+            {
+                WebUtil.WriteJsonError(context, ErrorCode.InvalideRequest, "ID无效");
+                return;
+            }
             int get_category = WebUtil.GetIntValue(context, "get_category");
             string type = context.Request["type"];
             List<Dictionary<string, object>> menus = new List<Dictionary<string, object>>();
@@ -4548,7 +4555,6 @@ namespace Web.Mobile
                 }
             }
             int sortby = WebUtil.GetIntValue(context, "sortby");
-            int categoryid = WebUtil.GetIntValue(context, "categoryid");
             string pageindex = context.Request.Form["pageindex"];
             string pagesize = context.Request.Form["pagesize"];
             long startRowIndex = long.Parse(pageindex);
@@ -4573,7 +4579,8 @@ namespace Web.Mobile
                 var item = new { id = p.ID, title = p.BusinessName, rate = p.RateComment, price = string.Empty, address = p.BusinessAddress, distance = p.Distance, distancedesc = p.DistanceDesc, imageurl = imageurl, istopshow = p.IsTopShow, PhoneNumber = p.ContactPhone, Remark = p.Remark };
                 return item;
             });
-            WebUtil.WriteJsonResult(context, new { menus = menus, list = items });
+            string categoryImgPath = string.IsNullOrEmpty(category.PicturePath) ? "" : WebUtil.GetContextPath() + category.PicturePath;
+            WebUtil.WriteJsonResult(context, new { menus = menus, list = items, categoryImgPath= categoryImgPath });
         }
         private void getproductlistbybusinessid(HttpContext context)
         {
@@ -4667,35 +4674,8 @@ namespace Web.Mobile
                 var item = new { id = p.ID, title = title_tag + ": " + p.MsgTitle };
                 return item;
             });
-            //社区新闻
-            var msg_categories = Foresight.DataAccess.Wechat_MsgCategory.GetWechat_MsgCategories().ToArray();
-            var newslist = msglist.Where(p => p.MsgType.Equals(Utility.EnumModel.WechatMsgType.news.ToString()) && p.IsCustomerAPPSend && p.IsTopShow).ToArray();
-            var newsitems = newslist.Select(p =>
-            {
-                var msg_category = msg_categories.FirstOrDefault(q => q.ID == p.CategoryID);
-                string categoryname = msg_category == null ? string.Empty : msg_category.CategoryName;
-                string imageurl = string.IsNullOrEmpty(p.PicPath) ? "../image/error-img.png" : WebUtil.GetContextPath() + p.PicPath;
-                string title_tag = Utility.EnumHelper.GetDescription(typeof(Utility.EnumModel.WechatMsgType), p.MsgType);
-                var item = new { id = p.ID, title = p.MsgTitle, categoryname = categoryname, imageurl = imageurl };
-                return item;
-            });
             var config_list = SysConfig.GetSysConfigs().ToArray();
-            //福顺优选
-            var config_youxuan = config_list.FirstOrDefault(p => p.Name.Equals(SysConfigNameDefine.MallHomeYouXuanCount.ToString()));
-            int youxuan_count = 10;
-            if (config_youxuan != null)
-            {
-                int.TryParse(config_youxuan.Value, out youxuan_count);
-                youxuan_count = youxuan_count > 0 ? youxuan_count : 10;
-            }
             var productlist = Foresight.DataAccess.Mall_ProductDetail.GetMall_ProductDetailList(IsShowOnHome: true, IsAllowProductBuy: true).ToArray();
-            var ziying_list = productlist.Where(p => p.ProductTypeID == 1 && p.IsYouXuan).OrderBy(p => p.YouXuanSortOrder).Take(youxuan_count).ToArray();
-            var ziyingitems = ziying_list.Select(p =>
-            {
-                string imageurl = string.IsNullOrEmpty(p.CoverImage) ? "../image/error-img.png" : WebUtil.GetContextPath() + p.CoverImage;
-                var item = new { id = p.ID, title = p.ProductName, price = p.NormalPriceDesc, salepoint = p.VariantPoint, saleprice = p.FinalVariantPrice, imageurl = imageurl };
-                return item;
-            });
             //拼团抢购
             var config_tuan = config_list.FirstOrDefault(p => p.Name.Equals(SysConfigNameDefine.MallHomePinTanCount.ToString()));
             int pint_count = 4;
@@ -4709,33 +4689,9 @@ namespace Web.Mobile
             {
                 string imageurl = string.IsNullOrEmpty(p.CoverImage) ? "../image/error-img.png" : WebUtil.GetContextPath() + p.CoverImage;
                 string countdowndate = p.countdowndate > DateTime.MinValue ? p.countdowndate.ToString("yyyy-MM-dd HH:mm:ss") : "";
-                var item = new { id = p.ID, title = p.ProductName, price = p.NormalPriceDesc, imageurl = imageurl, status = p.PinStatus, statusdesc = p.PinStatusDesc, inventory = p.Inventory, inventorydesc = p.InventoryDesc, countdownenable = p.countdownenable, countdown_timmer = 0, countdowndate = countdowndate, leftTime = 0, countdownday = "", countdowndesc = p.countdowndesc };
+                var item = new { id = p.ID, title = p.ProductName, pricedesc = p.NormalPriceDesc, imageurl = imageurl, status = p.PinStatus, statusdesc = p.PinStatusDesc, inventory = p.Inventory, inventorydesc = p.InventoryDesc, countdownenable = p.countdownenable, countdown_timmer = 0, countdowndate = countdowndate, leftTime = 0, countdownday = "", countdowndesc = p.countdowndesc, tag = p.ProductTypeID, tagdesc = p.ProductTypeDesc, count_dd = "", count_hh = "", count_mm = "", count_ss = "" };
                 return item;
             });
-            //推荐商家
-            var config_business = config_list.FirstOrDefault(p => p.Name.Equals(SysConfigNameDefine.MallHomeBusinessCount.ToString()));
-            int business_count = 6;
-            if (config_business != null)
-            {
-                int.TryParse(config_business.Value, out business_count);
-                business_count = business_count > 0 ? business_count : 6;
-            }
-            var business_list = Foresight.DataAccess.Mall_Business.GetMall_Businesses().Where(p => p.IsSuggestion && p.IsShowOnHome && p.Status == 1).OrderBy(p => p.SortOrder).ThenByDescending(p => p.AddTime).Take(business_count).ToArray();
-            var businessitems = business_list.Select(p =>
-            {
-                string imageurl = string.IsNullOrEmpty(p.CoverImage) ? "../image/error-img.png" : WebUtil.GetContextPath() + p.CoverImage;
-                var item = new { id = p.ID, title = p.BusinessName, imageurl = imageurl };
-                return item;
-            });
-            //热门消费
-            var config_hotsale = config_list.FirstOrDefault(p => p.Name.Equals(SysConfigNameDefine.MallHomeHotSaleCount.ToString()));
-            int hotsale_count = 10;
-            if (config_hotsale != null)
-            {
-                int.TryParse(config_hotsale.Value, out hotsale_count);
-                hotsale_count = hotsale_count > 0 ? hotsale_count : 6;
-            }
-            var hotsalelist = Mall_HotSaleDetail.GetMall_HotSaleList().Take(hotsale_count).ToList();
             var xiaoqu_items = new List<Dictionary<string, object>>();
             //我的小区
             if (uid > 0)
@@ -4749,13 +4705,7 @@ namespace Web.Mobile
                     return dic;
                 }).ToList();
             }
-            string newcomingimgsrc = "";
-            var rotate_img = Mall_RotatingImage.GetMall_RotatingImageListByType(14);
-            if (rotate_img.Length > 0)
-            {
-                newcomingimgsrc = string.IsNullOrEmpty(rotate_img[0].ImagePath) ? string.Empty : WebUtil.GetContextPath() + rotate_img[0].ImagePath;
-            }
-            WebUtil.WriteJsonResult(context, new { notifylist = msgitems, newslist = newsitems, productlist = ziyingitems, pintuanlist = pintuanitems, businesslist = businessitems, hotsalelist = hotsalelist, xiaoqulist = xiaoqu_items, newcomingimgsrc = newcomingimgsrc });
+            WebUtil.WriteJsonResult(context, new { notifylist = msgitems, pintuanlist = pintuanitems, xiaoqulist = xiaoqu_items });
         }
         private void gethouseservicedetail(HttpContext context)
         {
@@ -6330,7 +6280,7 @@ namespace Web.Mobile
             {
                 var imgurl = !string.IsNullOrEmpty(p.PicturePath) ? WebUtil.GetContextPath() + p.PicturePath : "../image/error-img.png";
                 int parentid = p.ParentID > 0 ? p.ParentID : 0;
-                var item = new { id = p.ID, title = p.CategoryName, src = imgurl, selected = false, parentid = parentid };
+                var item = new { id = p.ID, title = p.CategoryName, src = imgurl, is_active = false, parentid = parentid };
                 return item;
             });
             WebUtil.WriteJsonResult(context, new { servicelist = items });
